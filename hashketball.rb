@@ -127,3 +127,61 @@ def game_hash
 end
 
 # Write code here
+#helper method to find all players and their stats
+def all_players
+  game_hash[:home][:players] + game_hash[:away][:players]
+end
+
+def player_stats(player_name)
+  all_players.find do |player| 
+    player[:player_name] == player_name 
+  end
+end
+
+def num_points_scored(player_name)
+  player = player_stats(player_name)
+  player[:points]
+end
+
+def shoe_size(player_name)
+  player = player_stats(player_name)
+  player[:shoe]
+end
+
+#helper method to find data regarding a team (when argument is the team name)
+def find_team(team_name)
+  team_info = game_hash.find do |innerArray, team_data| #innerArray is the next object after game_hash. team_data is the next array after innerArray
+    team_data[:team_name] == team_name #compares each of the team to see which equals to team_name. Sets team_info to equal to that array
+  end
+
+  team_info[1] #team_info returns either home or array so we want to use [1] to get the innerArray
+end 
+
+def team_names
+  game_hash.map do |innerArray, team_data| #using map method returns the data in an array.
+  team_data[:team_name]
+  end
+end
+
+def team_colors(team_name)
+  team = find_team(team_name) #set team to equal the returned array
+  team[:colors]
+end
+
+def player_numbers(team_name)
+  playersInfo = find_team(team_name)
+  playersInfo[:players].map do |player|
+    player[:number]
+  end
+end
+
+#helper method to find player with largest shoesize and returns the shoe size
+def big_shoe_player
+  all_players.max_by do |player|
+    player[:shoe] #returns the array of info for the player with the max shoe size of 19
+  end
+end
+
+def big_shoe_rebounds
+  big_shoe_player[:rebounds]
+end
